@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Una historia medieval</title>
+</head>
+<body>
+	<div id="juego">
+		<!-- Con sigilo haz de pensar y tu mision no fallaras -->
+		<div id="pantalla">
+			<img src="" width="300" height="200" alt="" id="imagen">
+		</div>
+		<div id="mensaje"></div>
+		<div id="acciones"></div>
+	</div>
+	
+	<script type="text/javascript">
+		let arma = ""
+		
+		function cargarImagen(url) {
+			var _img = document.getElementById('imagen');
+			var newImg = new Image;
+			newImg.onload = function() {
+			    _img.src = this.src;
+			    console.log("cargo")
+			}
+			newImg.src = url;
+		}
+		
+		function imprimirMensaje(mensaje) {
+			document.getElementById("mensaje").innerHTML = mensaje
+		}
+		
+		function crearOpciones(opciones) {
+			const botones = opciones.map(opcion => {
+				let nuevoBoton = document.createElement("button");
+				nuevoBoton.innerText = opcion.texto
+				nuevoBoton.addEventListener('click', opcion.accion)
+				return nuevoBoton
+			})
+			
+			document.getElementById("acciones").innerHTML = ""
+			
+			botones.map(boton => {
+				document.getElementById("acciones").appendChild(boton)
+			})
+		}
+		
+		function inicioDeLaHistoria() {
+			cargarImagen("https://www.nacion.com/resizer/H4tGQ08yGIoi-HvojjwpwkaEpT8=/600x0/center/middle/filters:quality(100)/arc-anglerfish-arc2-prod-gruponacion.s3.amazonaws.com/public/5QVEHLSXEBAD7NQ4GUQYRQEZA4.jpg")
+			imprimirMensaje("Este es un tipico mundo medieval donde existe la desigualdad (respetando las tradiciones). Tu pueblo esta pasando por malos momentos, ya que la cosecha no le fue bien. Decides ir a robar la corona del Rey Aledaño. Esta es codiciada por muchas personas (asi que no es muy dificil de vender). Es tu mision robarla para salvar a tu pueblo de la desgracia inminente.")
+			crearOpciones([
+				{texto:"Continuar", accion:entrarAlCastillo}
+			])
+		}
+		
+		function entrarAlCastillo() {
+			cargarImagen("https://i.pinimg.com/originals/a2/8c/00/a28c005c852fed17487d6a147374f380.jpg")
+			imprimirMensaje("Elije un arma")
+			crearOpciones([
+				{texto:"Daga", accion:elegirDaga},
+				{texto:"Espada", accion:elegirEspada},
+				{texto:"Arco", accion:elegirArco}
+			])
+		}
+		
+		function elegirDaga() {
+			arma = "Daga"
+			comoVasAEntrarAlCastillo()
+		}
+		
+		function elegirEspada() {
+			arma = "Espada"
+			comoVasAEntrarAlCastillo()
+		}
+		
+		function elegirArco() {
+			arma ="Arco"
+			comoVasAEntrarAlCastillo()
+		}
+		
+		function comoVasAEntrarAlCastillo() {
+			cargarImagen("https://render.fineartamerica.com/images/rendered/medium/print/images-medium-5/cartoon--structure-of-the-eilean-donan-castle-in-front-with-dry-part-of-lake-ashish-agarwal.jpg")
+			imprimirMensaje("¿Como vas a entrar al castillo?")	
+			crearOpciones([
+				{texto:"Por la fosa", accion:entrarEnLaFosa},
+				{texto:"Por una entrada secreta", accion:puertaSecreta},
+				{texto:"Por la puerta principal", accion:puertaPrincipal}
+			])
+		}
+		
+		function entrarEnLaFosa() {
+			cargarImagen("http://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Nile_Croc_eating_AdF.jpg/600px-Nile_Croc_eating_AdF.jpg")
+			imprimirMensaje("Mueres. Te comieron los cocodrilos")	
+			crearOpciones([
+				{texto:"Iniciar historia", accion:inicioDeLaHistoria}
+			])
+		}
+		
+		function puertaSecreta() {
+			cargarImagen("https://i.pinimg.com/originals/2d/cc/33/2dcc3330f7c3e6c13f7ca230d443ca6d.jpg")
+			imprimirMensaje("Hay dos puertas ¿Por cual entras?")	
+			crearOpciones([
+				{texto:"Primera", accion:primeraPuerta},
+				{texto:"Segunda", accion:segundaPuerta}
+			])	
+		}
+		
+		function puertaPrincipal() {
+			cargarImagen("http://www.larevista.com.ec/sites/default/files/imagecache/imagengaleriagrande/6ARTE,photo01_0.jpg")
+			imprimirMensaje("Ten encuentras a 2 guardias ¿Que haces?")	
+			crearOpciones([
+				{texto:"Corres", accion:correrDeGuardias},
+				{texto:"Atacas", accion:atacarGuardias}
+			])
+		}
+		
+		function primeraPuerta() {
+			cargarImagen("http://2.bp.blogspot.com/-9v9kPHyKh64/Uwz-jB2y2jI/AAAAAAAAjC8/59WznwvkLqI/s1600/100_6772+%25281%2529.JPG")
+			imprimirMensaje("Esta cerrada")	
+			crearOpciones([
+				{texto:"La intentas forzar", accion:fuerzaLaPuertaDelPrincipe},
+				{texto:"Intentas entrar por la segunda puerta", accion:segundaPuerta}
+			])
+		}
+		
+		function segundaPuerta() {
+			cargarImagen("https://i0.wp.com/andorreandoporelmundo.com/wp-content/uploads/2017/10/Sala-2.jpg?fit=600%2C400&ssl=1")
+			imprimirMensaje("Te lleva a un tunel")	
+			crearOpciones([
+				{texto:"Llegar hasta el final del tunel", accion:()=>{
+					encontrasteLasDosPuertas("Encontraste dos puertas ¿Por cual entras?")
+				}}
+			])
+		}
+		
+		function correrDeGuardias() {
+			if (arma == "Daga") {
+				encontrasteLasDosPuertas("Lograste escapar. Cerca de ti hay dos puertas ¿Por cual entras?")	
+			} else {
+				cargarImagen("http://www.oneclickmediagroup.mx/sites/default/files/noticias/fosa-comu%CC%81n.jpg")
+				imprimirMensaje("Mueres. Los guardias te encontraron")	
+				crearOpciones([
+					{texto:"Iniciar historia", accion:inicioDeLaHistoria}
+				])
+			}
+		}
+		
+		function atacarGuardias() {
+			if (arma == "Espada") {
+				encontrasteLasDosPuertas("Les ganaste. Sigues caminando y en encuentras dos puertas ¿Por cual entras?")	
+			} else {
+				cargarImagen("http://www.oneclickmediagroup.mx/sites/default/files/noticias/fosa-comu%CC%81n.jpg")
+				imprimirMensaje("Mueres. Los guardias te ganaron")	
+				crearOpciones([
+					{texto:"Iniciar historia", accion:inicioDeLaHistoria}
+				])
+			}
+		}
+		
+		function encontrasteLasDosPuertas(mensaje) {
+			cargarImagen("https://i.pinimg.com/originals/2d/cc/33/2dcc3330f7c3e6c13f7ca230d443ca6d.jpg")
+			imprimirMensaje(mensaje)	
+			crearOpciones([
+				{texto:"Primera", accion:laPrimeraPuerta},
+				{texto:"Segunda", accion:laSegundaPuerta}
+			])
+		}
+		
+		function laPrimeraPuerta() {
+			cargarImagen("https://blog.sucuri.net/wp-content/uploads/2019/03/henry-hustava-81799-unsplash-600x400.jpg")
+			imprimirMensaje("Mueres. Entraste en la habitacion de la mano derecha del rey")	
+			crearOpciones([
+				{texto:"Iniciar historia", accion:inicioDeLaHistoria}
+			])
+		}
+		
+		function laSegundaPuerta() {
+			cargarImagen("https://motadelcuervoellugardelamancha.files.wordpress.com/2017/02/biblioteca-escorial-sala_2.jpg?w=600")
+			imprimirMensaje("Te lleva al pasillo principal. Ahi ves la corona")	
+			crearOpciones([
+				{texto:"La tomas y te escapas", accion:finDelJuego},
+				{texto:"Te escondes y esperas a que venga una guardia y la robas", accion:finDelJuego}
+			])
+		}
+		
+		function fuerzaLaPuertaDelPrincipe() {
+			if (arma == "Daga") {
+				cargarImagen("https://q-xx.bstatic.com/images/hotel/max600/151/151947751.jpg")
+				imprimirMensaje("Entras en la habitacion del principe y ahi ves una carta junto a una llave. El contenido del a carta es el siguiente:<br><em>Tio, mi padre me a solicitado que consiguiera un grupo de mercenarios para trasladar la corona, ya que esta se encuentra en peligro. Queria saber si me podias ayudar con esta tarea.<br>La corona real esta en el armario de mi hermana pequeña. Esto lo hicimos para despistar a todos los que la estan buscando, mientras trasladamos.<br><b>Siempre tuyo, Fredo Godofredo</b></em>")	
+				crearOpciones([
+					{texto:"Te llevas la llave y vas a la habitacion", accion:teLLevasLaLlave},
+					{texto:"No te llevas a la llave y vas a la habitacion", accion:noTeLlevasLaLlave}
+				])
+	
+			} else {
+				cargarImagen("http://www.oneclickmediagroup.mx/sites/default/files/noticias/fosa-comu%CC%81n.jpg")
+				imprimirMensaje("Mueres. Una tropa de guardias te escucharon al entrar en la habitacion")	
+				crearOpciones([
+					{texto:"Iniciar historia", accion:inicioDeLaHistoria}
+				])
+			}
+		}
+		
+		function teLLevasLaLlave() {
+			cargarImagen("http://www.oneclickmediagroup.mx/sites/default/files/noticias/fosa-comu%CC%81n.jpg")
+			imprimirMensaje("Mueres. Descubrieron tus planes")	
+			crearOpciones([
+				{texto:"Iniciar historia", accion:inicioDeLaHistoria}
+			])
+		}
+		
+		function noTeLlevasLaLlave() {
+			cargarImagen("http://mexicampo.com.mx/wp-content/uploads/2016/07/902069_NpAdvHover.jpg")
+			imprimirMensaje("Felicitaciones, gracias a tu sigilo y prudencia, lograste que tu pueblo se salvara de la desdicha")	
+			crearOpciones([{texto:"Reclamar premio", accion:()=>{ alert("El premio siempre estuvo en tu corazon. Ademas, robaste una corona. Dinero tienes.") }}])
+		}
+		
+		function finDelJuego() {
+			cargarImagen("https://k62.kn3.net/taringa/6/A/1/9/D/C/alexisnel1226/E7D.gif")
+			imprimirMensaje("")	
+			crearOpciones([
+				{texto:"Iniciar historia", accion:inicioDeLaHistoria}
+			])
+		}
+		
+		
+		inicioDeLaHistoria()
+	</script>
+</body>
+</html>
